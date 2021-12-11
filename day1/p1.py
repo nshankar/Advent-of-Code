@@ -1,11 +1,8 @@
+with open("input.txt", encoding="utf-8") as f:
+	data = [int(i) for i in f.readlines()]
+step = 1
 count = 0
-f = open("input.txt",'r')
-prev = int(next(f))
-for curr in f:
-	curr = int(curr)
-	if curr - prev > 0:
+for i in range(len(data)-step):
+	if data[i+step] > data[i]:
 		count += 1
-	prev = curr
-f.close()
 print(count)
-

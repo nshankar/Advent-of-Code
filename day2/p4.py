@@ -1,16 +1,12 @@
-fwd = 0
-aim = 0
-depth = 0
-with open("input.txt") as f:
+with open("input.txt",encoding="utf-8") as f:
+	fwd,aim,depth = 0,0,0
 	for line in f:
-		a = line[0]
-		n = int(line[-2])
-		if a == 'd':
+		key, n = line[0], int(line[-2])
+		if key == 'd':
 			aim += n
-		elif a == 'u':
+		elif key == 'u':
 			aim -= n 
 		else:
 			fwd += n 
 			depth += n*aim
-print(fwd, aim, depth)
 print(fwd*depth)

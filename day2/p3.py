@@ -1,8 +1,6 @@
-from collections import defaultdict
-d = defaultdict(int)
-with open("input.txt") as f:
+dirs = {'f':0,'d':0,'u':0}
+with open("input.txt",encoding="utf-8") as f:
 	for line in f:
-		d[line[0]] += int(line[-2])
-print(d)
-print(d['f'] * (d['d'] - d['u']))
+		dirs[line[0]] += int(line[-2])
+print(dirs['f'] * (dirs['d'] - dirs['u']))
 

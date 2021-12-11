@@ -1,77 +1,48 @@
-from collections import defaultdict
-from bisect import bisect_left, bisect_right
-
-with open("input.txt") as f:
-	lines = [line[:-1] for line in f.readlines()]
-	lines.sort()
-	lo = 0
-	hi = len(lines)
-	for i in range(len(lines[0])):
-		if lo+1 == hi:
-			break
-		tmp = [int(line[i]) for line in lines]
-		mid = lo + (hi-lo)//2
-		mostCommon = tmp[mid]		
-		if mostCommon:
-			idx = bisect_left(tmp,mostCommon,lo=lo, hi=hi)
-			lo = idx
-		else:
-			idx = bisect_right(tmp,mostCommon, lo=lo, hi=hi)
-			hi = idx
-	if lo+1 == hi:
-		g = lines[lo]
-		print("Generator Rating", lines[lo])
-
-	lo = 0
-	hi = len(lines)
-	for i in range(len(lines[0])):
-		if lo+1 == hi:
-			break
-		tmp = [int(line[i]) for line in lines]
-		nZeros = bisect_right(tmp, 0, lo, hi) - lo
-		#print(nZeros)
-		if nZeros <= (hi-lo)//2:
-			leastCommon = 0
-		else:
-			leastCommon = 1
-		#mid = lo + (hi-lo)//2
-		#leastCommon = int(not tmp[mid])	
-		if leastCommon:
-			idx = bisect_left(tmp,leastCommon,lo=lo, hi=hi)
-			lo = idx
-		else:
-			idx = bisect_right(tmp,leastCommon, lo=lo, hi=hi)
-			hi = idx
-	if lo+1 == hi:
-		s = lines[lo]
-		print("Scrubber Rating", lines[lo])
-
-	print(int(g,2)*int(s,2))
-
-
-
-
+def myBisect(l, lo=0, hi=None):
 	"""
-	Slines = Glines.copy()
-	GRating = 0
-	SRating = 0
-	counts = defaultdict(int)
-	count = len(Glines)
-	for line in Glines:
-		for i in range(len(line)):
-			counts[i] += int(line[i])
+	Return index of first 1 in l[lo:hi]
+	Requires: l sorted and contains only 0s and 1s
+	"""
+	if hi is None: hi = len(l)
+	while(lo < hi):
+		mid = lo + (hi-lo)//2
+		if l[mid]: hi = mid 
+		else: lo = mid + 1
+	return lo
 
-	for i in range(len(counts)):
-		print(i)
-		print(Glines)
-		print(Slines)
-		if len(Glines) == 1:
-			GRating = Glines.pop()
-		if len(Slines) == 1:
-			SRating == Slines.pop()
-		Gdigit = int(counts[i] >= count//2)
-		Sdigit = int(not Gdigit)
-		Glines = {x for x in Glines if int(x[i]) == Gdigit}
-		Slines = {x for x in Slines if int(x[i]) == Sdigit}
+def helper(nums, findMostCommon):
+	"""
+	Main logic, see spec
+	"""
+	digit = 0
+	bot,top = 0,len(nums[0])
+	while (bot+1 < top):
+		col = nums[digit]
+		idx = myBisect(col, bot, top)
+		bot, top = updateRange(idx,bot,top,findMostCommon)
+		digit+=1
+	return bot
 
-	print(GRating,SRating)"""
+def updateRange(idx, bot, top, findMostCommon):
+	"""Updates range to only include most/least common"""
+	if findMostCommon == (idx-bot > (top-bot)//2):
+		top = idx
+	else:
+		bot = idx
+	return bot,top
+
+def reformat(nums):
+	"""Transpose and change types"""
+	newNums = []
+	for j in range(len(nums[0])):
+		col = [int(nums[i][j]) for i in range(len(nums))]
+		newNums.append(col)
+	return newNums
+
+with open("test.txt",encoding="utf-8") as f:
+	_nums = [_num.rstrip() for _num in f.readlines()]
+_nums.sort()
+nums = reformat(_nums) #worthwhile so that helper() runs in linearithmic time
+g_idx = helper(nums,findMostCommon=True)
+s_idx = helper(nums,findMostCommon=False)
+print(int(_nums[g_idx],2)*int(_nums[s_idx],2))

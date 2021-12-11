@@ -1,23 +1,18 @@
-from collections import defaultdict
-d = defaultdict(int)
-count = 0
-with open("input.txt") as f:
-	for line in f:
-		num = line[:-1]
-		for i in range(len(num)):
-			d[i] += int(num[i])
-		count += 1
+def binIter2int(it):
+	"""
+	Convert boolean iterator to a base-10 integer 
+	interpreting the boolean iterator as a binary number
+	"""
+	s = "".join(str(int(b)) for b in it)
+	return int(s,2)
 
-gammaRate = []
-epsilonRate = []
-for i in range(len(d)):
-	gammaRate.append(int(d[i] > count//2))
-	epsilonRate.append(int(d[i] < count//2))
-
-gammaRate = "".join(str(x) for x in gammaRate)
-epsilonRate = "".join(str(x) for x in epsilonRate)
-gammaRate = int(gammaRate,2)
-epsilonRate = int(epsilonRate, 2)
-print(d)
-print(gammaRate*epsilonRate)
-
+with open('input.txt',encoding='utf-8') as f:
+	nums = [num.rstrip() for num in f.readlines()]
+n, m = len(nums), len(nums[0])
+counts = [0]*m
+for i in range(n):
+	for j in range(m):
+		counts[j] += int(nums[i][j])
+gamma = (counts[i] > n//2 for i in range(m))
+epsilon = (counts[i] < n//2 for i in range(m))
+print(binIter2int(gamma)*binIter2int(epsilon))
