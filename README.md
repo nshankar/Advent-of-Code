@@ -2,4 +2,4 @@
 
 **Author**: Nikhil Shankar
 
-These are my [Advent of Code](https://adventofcode.com/) puzzle solutions. 
+These are my [Advent of Code](https://adventofcode.com/) puzzle solutions.
