@@ -20,10 +20,10 @@ def main():
 
     """
     There is no principled reason this should work. We are simply blessed by multiple serendipities:
-        Let ??A be our starting state and ??Z, count = iter_til_Z(??A), then
-        1. ??A = (X, Y) implies ??Z = (Y, X)
-        2. len(directions) divides count
-        3. directions[0] and directions[-1] are opposites
+        Let ??A be our starting state and ??Z, n_steps = iter_til_Z(??A), then
+        1. ??Z is the only node ending in 'Z' reachable from ??A
+        2. len(directions) divides n_steps
+        3. ??Z is reached infinitely many times with period n_steps
 
     What good luck to see such symmetry!
     """
