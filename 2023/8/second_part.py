@@ -9,7 +9,7 @@ def iter_til_Z(state, directions, nodes):
             state = nodes[state][int(dir)]
             counter += 1
             if state[-1] == "Z":
-                return state, counter
+                return counter
 
 
 def main():
