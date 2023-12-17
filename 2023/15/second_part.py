@@ -7,7 +7,7 @@ def parse_step(step):
     match = re.match(pattern, step)
     if match:
         label, op, power = match.groups()
-    return label, op, int(power) if power else None
+    return label, op, int(power) if power else None  # pyright: ignore
 
 
 def main():
