@@ -53,7 +53,6 @@ def count_energized(starting_state, layout):
     visited = set()
     while len(beams):
         location, direction = beams.pop()
-        # print(location, direction)
         if (tuple(location), tuple(direction)) in visited:
             continue
         visited.add((tuple(location), tuple(direction)))
