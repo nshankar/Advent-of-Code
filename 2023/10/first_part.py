@@ -39,7 +39,7 @@ def initialize_helpers(data):
 def initialize_graph(data):
     in_bounds, v_to_i, _ = initialize_helpers(data)
     n_vertices = len(data) * len(data[0])
-    G = np.zeros((n_vertices, n_vertices), dtype=np.int64)
+    G = sp.dok_matrix((n_vertices, n_vertices), dtype=np.int64)
 
     # Initialize graph
     for i in range(len(data)):
@@ -62,7 +62,7 @@ def initialize_graph(data):
             continue
         if any(np.array_equal(-dir, x) for x in parser[str(data[*nbr])]):
             G[v_to_i(start), v_to_i(nbr)] = 1
-    return sp.csr_matrix(G), v_to_i(start)
+    return G, v_to_i(start)
 
 
 def main():
